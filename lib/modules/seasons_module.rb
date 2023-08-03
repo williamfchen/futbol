@@ -26,7 +26,6 @@ module Seasons
   end
   
   def percentage_visitor_wins
-    require 'pry'; binding.pry
     away_wins = GameTeam.game_teams.count { |game| game.hoa == "away" && game.result == "WIN" }
     (away_wins.to_f / total_games_played.to_f).round(2)
   end

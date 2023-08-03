@@ -1,4 +1,4 @@
-require_relative 'helper_class'
+require_relative './helper_class'
 
 class StatTracker
   attr_reader :data, 
