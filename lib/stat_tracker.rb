@@ -9,7 +9,6 @@ class StatTracker
 
   def initialize(data)
     @data = data
-    require 'pry'; binding.pry
     @game_file ||= CSV.open(data[:games], headers: true, header_converters: :symbol).group_by { |row| row[:season] }.map {|key, value| Season.new(key, value)}
     @game_file2 ||= CSV.foreach(data[:games], headers: true, header_converters: :symbol) { |row| SeasonGameID.new(row) }
     @team_file ||= CSV.foreach(data[:teams], headers: true, header_converters: :symbol) { |row| Team.new(row) }

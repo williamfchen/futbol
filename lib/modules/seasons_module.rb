@@ -24,8 +24,9 @@ module Seasons
     home_wins = GameTeam.game_teams.count { |game| game.hoa == "home" && game.result == "WIN" }
     (home_wins.to_f / total_games_played.to_f).round(2)
   end
-
+  
   def percentage_visitor_wins
+    require 'pry'; binding.pry
     away_wins = GameTeam.game_teams.count { |game| game.hoa == "away" && game.result == "WIN" }
     (away_wins.to_f / total_games_played.to_f).round(2)
   end
@@ -64,7 +65,6 @@ module Seasons
     team_hash = all_tackles_in(request_season).min_by {|team, total_tackles| total_tackles}[0]
     Team.teams_lookup[team_hash]
   end
-
   private
   
   def all_tackles_in(request_season)

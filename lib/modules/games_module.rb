@@ -17,7 +17,6 @@ module Games
 
   end
 
-
   def team_goals
     gamez = Hash.new(0)
     League.games.each do |game|
