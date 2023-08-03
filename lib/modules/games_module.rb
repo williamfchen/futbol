@@ -1,4 +1,4 @@
-require './lib/helper_class'
+require_relative '../helper_class'
 
 module Games
   def home_goals_by_team
