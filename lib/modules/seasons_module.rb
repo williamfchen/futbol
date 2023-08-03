@@ -1,7 +1,6 @@
-require './lib/helper_class'
+require_relative '../helper_class'
 
 module Seasons
-
   def total_games_played
     Season.seasons.map { |season| season.game_id }.flatten.count
   end
