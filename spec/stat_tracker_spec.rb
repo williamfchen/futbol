@@ -140,6 +140,8 @@ RSpec.describe StatTracker do
       expect(stat_tracker.most_tackles("20132014")).to eq "FC Cincinnati"
       expect(stat_tracker.most_tackles("20142015")).to eq "Seattle Sounders FC"
     end
+  end
+  
   describe "#fewest_tackles" do 
     it "can print the name of the team with the fewest tackles by season" do
       expect(stat_tracker.fewest_tackles("20132014")).to eq "Atlanta United"
@@ -188,6 +190,7 @@ RSpec.describe StatTracker do
       expect(stat_tracker.most_accurate_team("20132014")).to eq "Real Salt Lake"
       expect(stat_tracker.most_accurate_team("20142015")).to eq "Toronto FC"
     end
+  end
 
   describe "#least_accurate_team" do
     it "can print the name of the team with the highest accuracy by season" do
