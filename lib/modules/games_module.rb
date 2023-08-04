@@ -2,6 +2,38 @@ require_relative '../league'
 require_relative '../team'
 
 module Games
+  def best_offense
+    highest_average_goals_id = average_goals_per_team.key(average_goals_per_team.values.max)
+    Team.teams_lookup[highest_average_goals_id]
+  end
+  
+  def worst_offense
+    lowest_average_goals_id = average_goals_per_team.key(average_goals_per_team.values.min)
+    Team.teams_lookup[lowest_average_goals_id]
+  end
+  
+  def highest_scoring_home_team
+    highest_average_home_goals_id = average_goals_per_home_team.key(average_goals_per_home_team.values.max)
+    Team.teams_lookup[highest_average_home_goals_id]
+  end
+  
+  def lowest_scoring_home_team
+    lowest_average_home_goals_id = average_goals_per_home_team.key(average_goals_per_home_team.values.min)
+    Team.teams_lookup[lowest_average_home_goals_id]
+  end
+  
+  def highest_scoring_visitor
+    highest_average_away_goals_id = average_goals_per_away_team.key(average_goals_per_away_team.values.max)
+    Team.teams_lookup[highest_average_away_goals_id]
+  end
+  
+  def lowest_scoring_visitor
+    lowest_average_away_goals_id = average_goals_per_away_team.key(average_goals_per_away_team.values.min)
+    Team.teams_lookup[lowest_average_away_goals_id]
+  end
+
+  private
+
   def home_goals_by_team
     grouped_home_teams = League.games.group_by(&:home_team_id)
     grouped_home_teams.transform_values { |game| game.sum(&:home_team_goals) }
@@ -47,35 +79,5 @@ module Games
       team_id = total_goals_by_team.key(goals)
       goals.to_f / total_games_per_team[team_id]
     end
-  end
-  
-  def best_offense
-    highest_average_goals_id = average_goals_per_team.key(average_goals_per_team.values.max)
-    Team.teams_lookup[highest_average_goals_id]
-  end
-  
-  def worst_offense
-    lowest_average_goals_id = average_goals_per_team.key(average_goals_per_team.values.min)
-    Team.teams_lookup[lowest_average_goals_id]
-  end
-  
-  def highest_scoring_home_team
-    highest_average_home_goals_id = average_goals_per_home_team.key(average_goals_per_home_team.values.max)
-    Team.teams_lookup[highest_average_home_goals_id]
-  end
-  
-  def lowest_scoring_home_team
-    lowest_average_home_goals_id = average_goals_per_home_team.key(average_goals_per_home_team.values.min)
-    Team.teams_lookup[lowest_average_home_goals_id]
-  end
-  
-  def highest_scoring_visitor
-    highest_average_away_goals_id = average_goals_per_away_team.key(average_goals_per_away_team.values.max)
-    Team.teams_lookup[highest_average_away_goals_id]
-  end
-  
-  def lowest_scoring_visitor
-    lowest_average_away_goals_id = average_goals_per_away_team.key(average_goals_per_away_team.values.min)
-    Team.teams_lookup[lowest_average_away_goals_id]
   end
 end
