@@ -1,5 +1,3 @@
-require_relative "helper_class"
-
 class SeasonGameID
   @@games = []
   attr_reader :season, :game_id

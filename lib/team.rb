@@ -1,5 +1,3 @@
-require_relative 'helper_class'
-
 class Team
   @@teams = []
   @@teams_lookup = {}
