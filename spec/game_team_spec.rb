@@ -1,4 +1,4 @@
-require_relative 'spec_helper'
+# require_relative 'spec_helper'
 
 # describe GameTeam do
 #   let (:gameteam1) {gameteam1 = GameTeam.new({ game_id: 123456, 

@@ -14,8 +14,7 @@ RSpec.describe StatTracker do
     Season.class_variable_set :@@seasons, []
     GameTeam.class_variable_set :@@game_teams, []
     Team.class_variable_set :@@teams, []
-    League.class_variable_set :@@games, []
-    SeasonGameID.class_variable_set :@@games, []
+    Game.class_variable_set :@@games, []
   end
 
   describe '#initialize' do
