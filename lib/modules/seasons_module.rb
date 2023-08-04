@@ -1,4 +1,7 @@
-require_relative '../helper_class'
+require_relative '../season'
+require_relative '../game_team'
+require_relative '../season_game_id'
+require_relative '../team'
 
 module Seasons
   def total_games_played
@@ -76,7 +79,6 @@ module Seasons
 
   def winningest_coach(request_season)
     coach_win_percentage(request_season).key(coach_win_percentage(request_season).values.max)
-    require 'pry'; binding.pry
   end
   
   def worst_coach(request_season)

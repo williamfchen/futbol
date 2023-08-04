@@ -1,5 +1,3 @@
-require_relative 'helper_class'
-
 class GameTeam
   @@game_teams = []
   attr_reader :game_id,

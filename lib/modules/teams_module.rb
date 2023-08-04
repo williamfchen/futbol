@@ -1,4 +1,4 @@
-require_relative '../helper_class'
+require_relative '../team'
 
 module Teams
   def count_of_teams
