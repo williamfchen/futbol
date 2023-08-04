@@ -13,8 +13,6 @@ class League
     @@games << self
   end
 
-  # private
-
   def self.games
     @@games
   end
