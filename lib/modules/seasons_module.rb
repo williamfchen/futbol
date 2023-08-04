@@ -23,7 +23,7 @@ module Seasons
     home_wins = GameTeam.game_teams.count { |game| game.hoa == "home" && game.result == "WIN" }
     (home_wins.to_f / total_games_played.to_f).round(2)
   end
-
+  
   def percentage_visitor_wins
     away_wins = GameTeam.game_teams.count { |game| game.hoa == "away" && game.result == "WIN" }
     (away_wins.to_f / total_games_played.to_f).round(2)
@@ -74,8 +74,35 @@ module Seasons
     Team.teams_lookup[team_hash]
   end
 
-  private
+  def winningest_coach(request_season)
+    coach_win_percentage(request_season).key(coach_win_percentage(request_season).values.max)
+    require 'pry'; binding.pry
+  end
   
+  def worst_coach(request_season)
+    coach_win_percentage(request_season).key(coach_win_percentage(request_season).values.min)
+  end
+  
+  private
+
+  def coach_win_percentage(request_season)
+    coach_wins = seasonal_coach_games[request_season].each_with_object({}) { |(key, value), hash| hash[key] = value.count { |game| game.result == "WIN" } }
+    coach_total_games = seasonal_coach_games[request_season].each_with_object ({}) { |(key, value), hash| hash[key] = value.count }
+    win_percentages = coach_wins.each_with_object({}) {|(key, value), hash| hash[key] = value.to_f / coach_total_games[key].to_f }
+  end
+
+  def seasonal_coach_games
+    seasonal_game_teams.each_with_object({}) { |(season, game), hash| hash[season] = game.group_by { |each| each.coach } }
+  end
+
+  def seasonal_games
+    Season.seasons.each_with_object({}) { |season, hash| hash[season.season] = season.game_id }
+  end
+
+  def seasonal_game_teams
+    seasonal_games.each_with_object({}) { |(key, value), hash| hash[key] =  GameTeam.game_teams.find_all { |game| value.include?(game.game_id) } }
+  end
+
   def all_tackles_in(request_season)
     season_game_teams = GameTeam.game_teams.select { |game| game_id_season(request_season).include?(game.game_id) }
     only_team_id = season_game_teams.map { |team| team.team_id }.uniq
@@ -114,6 +141,7 @@ module Seasons
     the_season = SeasonGameID.games.select { |game| game.season == request_season }
     the_season.map { |game| game.game_id }
   end
+
 
 
 
