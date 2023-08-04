@@ -76,7 +76,6 @@ module Seasons
 
   def winningest_coach(request_season)
     coach_win_percentage(request_season).key(coach_win_percentage(request_season).values.max)
-    require 'pry'; binding.pry
   end
   
   def worst_coach(request_season)
