@@ -111,11 +111,9 @@ module Seasons
     
     all_tackles = Hash.new(0)
     
-    only_team_id.each do |id|
-      season_game_teams.each do |teams|
-        if teams.team_id == id
-          all_tackles[id] += teams.tackles.to_i
-        end
+    season_game_teams.each do |teams|
+      if only_team_id.include?(teams.team_id)
+        all_tackles[teams.team_id] += teams.tackles.to_i
       end
     end
     all_tackles
@@ -127,13 +125,11 @@ module Seasons
     
     all_goals = Hash.new(0)
     all_shots = Hash.new(0)
-    
-    only_team_id.each do |id|
-      season_game_teams.each do |teams|
-        if teams.team_id == id
-          all_goals[id] += teams.goals.to_i
-          all_shots[id] += teams.shots.to_i
-        end
+
+    season_game_teams.each do |teams|
+      if only_team_id.include?(teams.team_id)
+        all_goals[teams.team_id] += teams.goals.to_i
+        all_shots[teams.team_id] += teams.shots.to_i
       end
     end
     all_accuracies = all_goals.merge(all_shots) {|team_id, old_data, new_data| old_data.to_f / new_data.to_f }
