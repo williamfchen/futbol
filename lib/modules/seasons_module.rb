@@ -1,4 +1,7 @@
-require_relative '../helper_class'
+require_relative '../season'
+require_relative '../game_team'
+require_relative '../season_game_id'
+require_relative '../team'
 
 module Seasons
   def total_games_played

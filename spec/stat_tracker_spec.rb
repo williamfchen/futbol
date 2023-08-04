@@ -16,8 +16,8 @@ RSpec.describe StatTracker do
     GameTeam.class_variable_set :@@game_teams, []
     Team.class_variable_set :@@teams, []
     League.class_variable_set :@@games, []
+    SeasonGameID.class_variable_set :@@games, []
   end
-  #before :each mocks and stubs seem good here
 
   describe '#initialize' do
     it 'should initialize with the correct instance variables' do

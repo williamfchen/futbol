@@ -1,5 +1,3 @@
-require_relative 'helper_class'
-
 class Season
   @@seasons = []
   attr_reader :season,

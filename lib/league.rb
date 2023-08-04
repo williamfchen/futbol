@@ -1,5 +1,3 @@
-require_relative 'helper_class'
-
 class League
   @@games = []
   attr_reader :away_team_id,
