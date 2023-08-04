@@ -1,25 +1,28 @@
 require_relative '../season'
 require_relative '../game_team'
-require_relative '../season_game_id'
+require_relative '../game'
 require_relative '../team'
 
 module Seasons
   def total_games_played
-    Season.seasons.map { |season| season.game_id }.flatten.count
+    # Season.seasons.map { |season| season.game_id }.flatten.count
+    Game.games.count
   end
 
   def highest_total_score
-    away_goals = Season.seasons.map { |season| season.away_goals.map(&:to_i) }.flatten
-    home_goals = Season.seasons.map { |season| season.home_goals.map(&:to_i) }.flatten
-    totals = [away_goals, home_goals].transpose.map { |each| each.sum }
-    totals.max
+    # away_goals = Season.seasons.map { |season| season.away_goals.map(&:to_i) }.flatten
+    # home_goals = Season.seasons.map { |season| season.home_goals.map(&:to_i) }.flatten
+    # totals = [away_goals, home_goals].transpose.map { |each| each.sum }
+    # totals.max
+    Game.games.map { |game| game.away_team_goals + game.home_team_goals }.max
   end
 
   def lowest_total_score
-    away_goals = Season.seasons.map { |season| season.away_goals.map(&:to_i) }.flatten
-    home_goals = Season.seasons.map { |season| season.home_goals.map(&:to_i) }.flatten
-    totals = [away_goals, home_goals].transpose.map { |each| each.sum }
-    totals.min
+    # away_goals = Season.seasons.map { |season| season.away_goals.map(&:to_i) }.flatten
+    # home_goals = Season.seasons.map { |season| season.home_goals.map(&:to_i) }.flatten
+    # totals = [away_goals, home_goals].transpose.map { |each| each.sum }
+    # totals.min
+    Game.games.map { |game| game.away_team_goals + game.home_team_goals }.min
   end
 
   def percentage_home_wins
@@ -38,22 +41,24 @@ module Seasons
   end
 
   def count_of_games_by_season
-    Season.seasons.each_with_object({}) { |season, hash| hash[season.season] = season.game_id.count }
+    seasons = Game.games.group_by { |game| game.season }.each_with_object({}) { |(season, game), hash| hash[season] = game.count }
   end
 
   def average_goals_per_game
-    away_goals = Season.seasons.map { |season| season.away_goals.map(&:to_i) }.flatten
-    home_goals = Season.seasons.map { |season| season.home_goals.map(&:to_i) }.flatten
-    totals = [away_goals, home_goals].transpose.sum { |each| each.sum }
-    (totals.to_f / total_games_played.to_f).round(2)
+    # away_goals = Season.seasons.map { |season| season.away_goals.map(&:to_i) }.flatten
+    # home_goals = Season.seasons.map { |season| season.home_goals.map(&:to_i) }.flatten
+    # totals = [away_goals, home_goals].transpose.sum { |each| each.sum }
+    # (totals.to_f / total_games_played.to_f).round(2)
+    totals = Game.games.map { |game| game.away_team_goals + game.home_team_goals }
+    (totals.sum.to_f / totals.count.to_f).round(2)
   end
 
   def average_goals_by_season
-    Season.seasons.each_with_object({}) do |season, hash| 
-      away = season.away_goals.map(&:to_i)
-      home = season.home_goals.map(&:to_i)
+    Game.games.group_by { |game| game.season }.each_with_object({}) do |(season, game), hash| 
+      away = game.map { |each| each.away_team_goals.to_i }
+      home = game.map { |each| each.home_team_goals.to_i }
       total = [away, home].transpose.sum { |each| each.sum }
-      hash[season.season] = (total.to_f / season.game_id.count.to_f).round(2)
+      hash[season] = (total.to_f / game.count.to_f).round(2)
     end
   end
 
@@ -98,7 +103,8 @@ module Seasons
   end
 
   def seasonal_games
-    Season.seasons.each_with_object({}) { |season, hash| hash[season.season] = season.game_id }
+    by_season = Game.games.group_by { |game| game.season }
+    by_season.each_with_object({}) { |row, hash| hash[row[0]] = row[1].map { |game| game.game_id } }
   end
 
   def seasonal_game_teams
@@ -140,11 +146,7 @@ module Seasons
   end 
   
   def game_id_season(request_season)
-    the_season = SeasonGameID.games.select { |game| game.season == request_season }
+    the_season = Game.games.select { |game| game.season == request_season }
     the_season.map { |game| game.game_id }
   end
-
-
-
-
 end

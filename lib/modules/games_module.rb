@@ -1,14 +1,14 @@
-require_relative '../league'
+require_relative '../game'
 require_relative '../team'
 
 module Games
   def home_goals_by_team
-    grouped_home_teams = League.games.group_by(&:home_team_id)
+    grouped_home_teams = Game.games.group_by(&:home_team_id)
     grouped_home_teams.transform_values { |game| game.sum(&:home_team_goals) }
   end
   
   def away_goals_by_team
-    grouped_away_teams = League.games.group_by(&:away_team_id)
+    grouped_away_teams = Game.games.group_by(&:away_team_id)
     grouped_away_teams.transform_values { |game| game.sum(&:away_team_goals) }
   end
   
@@ -17,11 +17,11 @@ module Games
   end
   
   def home_games_per_team
-    League.games.group_by(&:home_team_id).transform_values(&:count)
+    Game.games.group_by(&:home_team_id).transform_values(&:count)
   end
   
   def away_games_per_team
-    League.games.group_by(&:away_team_id).transform_values(&:count)
+    Game.games.group_by(&:away_team_id).transform_values(&:count)
   end
   
   def total_games_per_team

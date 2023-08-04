@@ -12,11 +12,9 @@ RSpec.describe StatTracker do
 
   before(:each) do
     Season.class_variable_set :@@seasons, []
-    SeasonGameID.class_variable_set :@@games, []
     GameTeam.class_variable_set :@@game_teams, []
     Team.class_variable_set :@@teams, []
-    League.class_variable_set :@@games, []
-    SeasonGameID.class_variable_set :@@games, []
+    Game.class_variable_set :@@games, []
   end
 
   describe '#initialize' do
