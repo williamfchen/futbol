@@ -2,6 +2,39 @@ require_relative '../game'
 require_relative '../team'
 
 module Games
+  def best_offense
+    id = team_hash.max_by { |team, value_hash| value_hash[:total_goals].to_f / value_hash[:total_games] }.first
+    Team.teams_lookup[id]
+  end
+  
+  def worst_offense
+    id = team_hash.min_by { |team, value_hash| value_hash[:total_goals].to_f / value_hash[:total_games] }.first
+    Team.teams_lookup[id]
+  end
+  
+  def highest_scoring_home_team
+    id = team_hash.max_by { |team, value_hash| value_hash[:home_goals].to_f / value_hash[:home_games] }.first
+    Team.teams_lookup[id]
+  end
+  
+  def lowest_scoring_home_team
+    id = team_hash.min_by { |team, value_hash| value_hash[:home_goals].to_f / value_hash[:home_games] }.first
+    Team.teams_lookup[id]
+  end
+  
+  def highest_scoring_visitor
+    id = team_hash.max_by { |team, value_hash| value_hash[:away_goals].to_f / value_hash[:away_games] }.first
+    Team.teams_lookup[id]
+  end
+  
+  def lowest_scoring_visitor
+    id = team_hash.min_by { |team, value_hash| value_hash[:away_goals].to_f / value_hash[:away_games] }.first
+    Team.teams_lookup[id]
+
+  end
+
+  private
+
   def home_goals_by_team
     grouped_home_teams = Game.games.group_by(&:home_team_id)
     grouped_home_teams.transform_values { |game| game.sum(&:home_team_goals) }
@@ -11,11 +44,7 @@ module Games
     grouped_away_teams = Game.games.group_by(&:away_team_id)
     grouped_away_teams.transform_values { |game| game.sum(&:away_team_goals) }
   end
-  
-  def total_goals_by_team
-    home_goals_by_team.merge(away_goals_by_team) { |team_id, home_goals, away_goals| home_goals + away_goals }
-  end
-  
+    
   def home_games_per_team
     Game.games.group_by(&:home_team_id).transform_values(&:count)
   end
@@ -24,58 +53,18 @@ module Games
     Game.games.group_by(&:away_team_id).transform_values(&:count)
   end
   
-  def total_games_per_team
-    home_games_per_team.merge(away_games_per_team) { |team_id, home_games, away_games| home_games + away_games }
-  end
-  
-  def average_goals_per_home_team
-    home_goals_by_team.transform_values do |goals|
-      team_id = home_goals_by_team.key(goals)
-      goals.to_f / home_games_per_team[team_id]
+  def team_hash
+    team_hash = {}
+    home_goals_by_team.each do |team_id, home_goals|
+      team_hash[team_id] = {
+        home_goals: home_goals,
+        away_goals: away_goals_by_team[team_id],
+        total_goals: home_goals + away_goals_by_team[team_id],
+        home_games: home_games_per_team[team_id],
+        away_games: away_games_per_team[team_id],
+        total_games: home_games_per_team[team_id] + away_games_per_team[team_id]
+      }
     end
-  end
-  
-  def average_goals_per_away_team
-    away_goals_by_team.transform_values do |goals|
-      team_id = away_goals_by_team.key(goals)
-      goals.to_f / away_games_per_team[team_id]
-    end
-  end
-  
-  def average_goals_per_team
-    total_goals_by_team.transform_values do |goals|
-      team_id = total_goals_by_team.key(goals)
-      goals.to_f / total_games_per_team[team_id]
-    end
-  end
-  
-  def best_offense
-    highest_average_goals_id = average_goals_per_team.key(average_goals_per_team.values.max)
-    Team.teams_lookup[highest_average_goals_id]
-  end
-  
-  def worst_offense
-    lowest_average_goals_id = average_goals_per_team.key(average_goals_per_team.values.min)
-    Team.teams_lookup[lowest_average_goals_id]
-  end
-  
-  def highest_scoring_home_team
-    highest_average_home_goals_id = average_goals_per_home_team.key(average_goals_per_home_team.values.max)
-    Team.teams_lookup[highest_average_home_goals_id]
-  end
-  
-  def lowest_scoring_home_team
-    lowest_average_home_goals_id = average_goals_per_home_team.key(average_goals_per_home_team.values.min)
-    Team.teams_lookup[lowest_average_home_goals_id]
-  end
-  
-  def highest_scoring_visitor
-    highest_average_away_goals_id = average_goals_per_away_team.key(average_goals_per_away_team.values.max)
-    Team.teams_lookup[highest_average_away_goals_id]
-  end
-  
-  def lowest_scoring_visitor
-    lowest_average_away_goals_id = average_goals_per_away_team.key(average_goals_per_away_team.values.min)
-    Team.teams_lookup[lowest_average_away_goals_id]
+    team_hash
   end
 end
