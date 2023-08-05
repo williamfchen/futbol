@@ -63,23 +63,19 @@ module Seasons
   end
 
   def most_tackles(request_season)
-    team_hash = all_tackles_in(request_season).max_by {|team, total_tackles| total_tackles}[0]
-    Team.teams_lookup[team_hash]
+    Team.teams_lookup[all_tackles_in(request_season).key(all_tackles_in(request_season).values.max)]
   end
   
   def fewest_tackles(request_season)
-    team_hash = all_tackles_in(request_season).min_by {|team, total_tackles| total_tackles}[0]
-    Team.teams_lookup[team_hash]
+    Team.teams_lookup[all_tackles_in(request_season).key(all_tackles_in(request_season).values.min)]
   end
 
   def most_accurate_team(request_season)
-    team_hash = all_accuracies(request_season).max_by {|team, accuracies| accuracies} [0]
-    Team.teams_lookup[team_hash]
+    Team.teams_lookup[all_accuracies(request_season).key(all_accuracies(request_season).values.max)]
   end
 
   def least_accurate_team(request_season)
-    team_hash = all_accuracies(request_season).min_by {|team, accuracies| accuracies} [0]
-    Team.teams_lookup[team_hash]
+    Team.teams_lookup[all_accuracies(request_season).key(all_accuracies(request_season).values.min)]
   end
 
   def winningest_coach(request_season)
@@ -93,60 +89,38 @@ module Seasons
   private
 
   def coach_win_percentage(request_season)
-    coach_wins = seasonal_coach_games[request_season].each_with_object({}) { |(key, value), hash| hash[key] = value.count { |game| game.result == "WIN" } }
-    coach_total_games = seasonal_coach_games[request_season].each_with_object ({}) { |(key, value), hash| hash[key] = value.count }
+    game_id_by_season = game_id_season(request_season)
+    gameteam_by_season = game_team_season(game_id_by_season)
+    seasonal_coach_games = gameteam_by_season.group_by { |each| each.coach }
+    coach_wins = seasonal_coach_games.each_with_object({}) { |(key, value), hash| hash[key] = value.count { |game| game.result == "WIN" } }
+    coach_total_games = seasonal_coach_games.each_with_object ({}) { |(key, value), hash| hash[key] = value.count }
     win_percentages = coach_wins.each_with_object({}) {|(key, value), hash| hash[key] = value.to_f / coach_total_games[key].to_f }
   end
 
-  def seasonal_coach_games
-    seasonal_game_teams.each_with_object({}) { |(season, game), hash| hash[season] = game.group_by { |each| each.coach } }
-  end
-
-  def seasonal_games
-    by_season = Game.games.group_by { |game| game.season }
-    by_season.each_with_object({}) { |row, hash| hash[row[0]] = row[1].map { |game| game.game_id } }
-  end
-
-  def seasonal_game_teams
-    seasonal_games.each_with_object({}) { |(key, value), hash| hash[key] =  GameTeam.game_teams.find_all { |game| value.include?(game.game_id) } }
-  end
-
   def all_tackles_in(request_season)
-    season_game_teams = GameTeam.game_teams.select { |game| game_id_season(request_season).include?(game.game_id) }
-    only_team_id = season_game_teams.map { |team| team.team_id }.uniq
-    
-    all_tackles = Hash.new(0)
-    
-    only_team_id.each do |id|
-      season_game_teams.each do |teams|
-        if teams.team_id == id
-          all_tackles[id] += teams.tackles.to_i
-        end
-      end
-    end
-    all_tackles
+    game_id_by_season = game_id_season(request_season)
+    gameteam_by_season = game_team_season(game_id_by_season)
+    gameteam_by_season.each_with_object(Hash.new(0)) { |game, hash| hash[game.team_id] += game.tackles.to_i }
   end 
 
   def all_accuracies(request_season)
-    season_game_teams = GameTeam.game_teams.select { |game| game_id_season(request_season).include?(game.game_id) }
-    only_team_id = season_game_teams.map { |team| team.team_id }.uniq
-    
-    all_goals = Hash.new(0)
-    all_shots = Hash.new(0)
-    
-    only_team_id.each do |id|
-      season_game_teams.each do |teams|
-        if teams.team_id == id
-          all_goals[id] += teams.goals.to_i
-          all_shots[id] += teams.shots.to_i
-        end
-      end
-    end
+    game_id_by_season = game_id_season(request_season)
+    gameteam_by_season = game_team_season(game_id_by_season)
+    all_shots = gameteam_by_season.each_with_object(Hash.new(0)) { |game, hash| hash[game.team_id] += game.shots.to_i }
+    all_goals = gameteam_by_season.each_with_object(Hash.new(0)) { |game, hash| hash[game.team_id] += game.goals.to_i }
+    # all_accuracies = all_goals.each_with_object({}) { |(key, value), hash| hash[key] = value.to_f / all_shots[key].to_f }
     all_accuracies = all_goals.merge(all_shots) {|team_id, old_data, new_data| old_data.to_f / new_data.to_f }
   end 
   
   def game_id_season(request_season)
-    the_season = Game.games.select { |game| game.season == request_season }
-    the_season.map { |game| game.game_id }
+    each_season ||= Game.games.group_by { |game| game.season }
+    each_season[request_season].map { |game| game.game_id }
   end
+
+  def game_team_season(games)
+    each_season = GameTeam.game_teams.select { |game| game.team_id if games.include?(game.game_id) }
+  end
+
+
+  
 end
