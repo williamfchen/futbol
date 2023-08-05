@@ -147,13 +147,11 @@ module Best
       away_goals = game[:away_goals].to_i
       home_goals = game[:home_goals].to_i
     
-      # Update away team stats
       team_stats[away_team_id][:away_goals] += away_goals
       team_stats[away_team_id][:total_goals] += away_goals
       team_stats[away_team_id][:away_games] += 1
       team_stats[away_team_id][:total_games] += 1
     
-      # Update home team stats
       team_stats[home_team_id][:home_goals] += home_goals
       team_stats[home_team_id][:total_goals] += home_goals
       team_stats[home_team_id][:home_games] += 1
