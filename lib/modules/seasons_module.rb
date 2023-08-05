@@ -5,23 +5,14 @@ require_relative '../team'
 
 module Seasons
   def total_games_played
-    # Season.seasons.map { |season| season.game_id }.flatten.count
     Game.games.count
   end
 
   def highest_total_score
-    # away_goals = Season.seasons.map { |season| season.away_goals.map(&:to_i) }.flatten
-    # home_goals = Season.seasons.map { |season| season.home_goals.map(&:to_i) }.flatten
-    # totals = [away_goals, home_goals].transpose.map { |each| each.sum }
-    # totals.max
     Game.games.map { |game| game.away_team_goals + game.home_team_goals }.max
   end
 
   def lowest_total_score
-    # away_goals = Season.seasons.map { |season| season.away_goals.map(&:to_i) }.flatten
-    # home_goals = Season.seasons.map { |season| season.home_goals.map(&:to_i) }.flatten
-    # totals = [away_goals, home_goals].transpose.map { |each| each.sum }
-    # totals.min
     Game.games.map { |game| game.away_team_goals + game.home_team_goals }.min
   end
 
@@ -45,10 +36,6 @@ module Seasons
   end
 
   def average_goals_per_game
-    # away_goals = Season.seasons.map { |season| season.away_goals.map(&:to_i) }.flatten
-    # home_goals = Season.seasons.map { |season| season.home_goals.map(&:to_i) }.flatten
-    # totals = [away_goals, home_goals].transpose.sum { |each| each.sum }
-    # (totals.to_f / total_games_played.to_f).round(2)
     totals = Game.games.map { |game| game.away_team_goals + game.home_team_goals }
     (totals.sum.to_f / totals.count.to_f).round(2)
   end
@@ -108,7 +95,6 @@ module Seasons
     gameteam_by_season = game_team_season(game_id_by_season)
     all_shots = gameteam_by_season.each_with_object(Hash.new(0)) { |game, hash| hash[game.team_id] += game.shots.to_i }
     all_goals = gameteam_by_season.each_with_object(Hash.new(0)) { |game, hash| hash[game.team_id] += game.goals.to_i }
-    # all_accuracies = all_goals.each_with_object({}) { |(key, value), hash| hash[key] = value.to_f / all_shots[key].to_f }
     all_accuracies = all_goals.merge(all_shots) {|team_id, old_data, new_data| old_data.to_f / new_data.to_f }
   end 
   
@@ -119,8 +105,5 @@ module Seasons
 
   def game_team_season(games)
     each_season = GameTeam.game_teams.select { |game| game.team_id if games.include?(game.game_id) }
-  end
-
-
-  
+  end  
 end
