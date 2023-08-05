@@ -134,14 +134,18 @@ RSpec.describe StatTracker do
     end
   end
 
-  it "#most_tackles" do
-    expect(stat_tracker.most_tackles("20132014")).to eq "FC Cincinnati"
-    expect(stat_tracker.most_tackles("20142015")).to eq "Seattle Sounders FC"
+  describe "#most_tackles" do
+    it "can print the name of the team with the most tackles by season" do
+      expect(stat_tracker.most_tackles("20132014")).to eq "FC Cincinnati"
+      expect(stat_tracker.most_tackles("20142015")).to eq "Seattle Sounders FC"
+    end
   end
-
-  it "#fewest_tackles" do
-    expect(stat_tracker.fewest_tackles("20132014")).to eq "Atlanta United"
-    expect(stat_tracker.fewest_tackles("20142015")).to eq "Orlando City SC"
+  
+  describe "#fewest_tackles" do 
+    it "can print the name of the team with the fewest tackles by season" do
+      expect(stat_tracker.fewest_tackles("20132014")).to eq "Atlanta United"
+      expect(stat_tracker.fewest_tackles("20142015")).to eq "Orlando City SC"
+    end
   end
   
   describe '#best_offense' do
@@ -180,14 +184,18 @@ RSpec.describe StatTracker do
     end
   end
 
-  it "#most_accurate_team" do
-    expect(stat_tracker.most_accurate_team("20132014")).to eq "Real Salt Lake"
-    expect(stat_tracker.most_accurate_team("20142015")).to eq "Toronto FC"
+  describe "#most_accurate_team" do
+    it "can print the name of the team with the highest accuracy by season" do
+      expect(stat_tracker.most_accurate_team("20132014")).to eq "Real Salt Lake"
+      expect(stat_tracker.most_accurate_team("20142015")).to eq "Toronto FC"
+    end
   end
 
-  it "#least_accurate_team" do
-    expect(stat_tracker.least_accurate_team("20132014")).to eq "New York City FC"
-    expect(stat_tracker.least_accurate_team("20142015")).to eq "Columbus Crew SC"
+  describe "#least_accurate_team" do
+    it "can print the name of the team with the highest accuracy by season" do
+      expect(stat_tracker.least_accurate_team("20132014")).to eq "New York City FC"
+      expect(stat_tracker.least_accurate_team("20142015")).to eq "Columbus Crew SC"
+    end
   end
 end
 
