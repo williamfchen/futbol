@@ -207,8 +207,7 @@ RSpec.describe StatTracker do
         "abbreviation" => "MIN",
         "link" => "/api/v1/teams/18"
       }
-
-      expect(@stat_tracker.team_info("18")).to eq expected
+      expect(stat_tracker.team_info("18")).to eq expected
     end
   end
 end
