@@ -11,10 +11,7 @@ RSpec.describe StatTracker do
   let(:stat_tracker) { StatTracker.from_csv(data) }
 
   before(:each) do
-    Season.class_variable_set :@@seasons, []
-    GameTeam.class_variable_set :@@game_teams, []
     Team.class_variable_set :@@teams, []
-    Game.class_variable_set :@@games, []
   end
 
   describe '#initialize' do
@@ -37,7 +34,7 @@ RSpec.describe StatTracker do
     end
   end
 
-  describe "#loweest_total_score" do
+  describe "#lowest_total_score" do
     it 'returns the lowest total score in a game through all seasons' do
 
       expect(stat_tracker.lowest_total_score).to eq(0)
@@ -122,7 +119,7 @@ RSpec.describe StatTracker do
     end
   end
 
-  xdescribe "#worst_coach" do
+  describe "#worst_coach" do
     it 'returns the name of the coach with the highest win percentage for that season' do
 
       expect(stat_tracker.worst_coach("20122013")).to eq("Martin Raymond")
