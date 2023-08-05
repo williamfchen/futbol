@@ -11,10 +11,9 @@ class Team
   def initialize(team_details)
     @teamname = team_details[:teamname]
     @team_id = team_details[:team_id]
-    @franchise_id = team_details[:franchise_id]
+    @franchise_id = team_details[:franchiseid]
     @abbreviation = team_details[:abbreviation]
     @link = team_details[:link]
-
     @@teams << self
     @@teams_lookup[@team_id] = @teamname
   end
@@ -27,4 +26,3 @@ class Team
     @@teams_lookup
   end
 end
-  
