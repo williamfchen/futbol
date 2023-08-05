@@ -1,5 +1,6 @@
 class GameTeam
   @@game_teams = []
+  @@season_lookup
   attr_reader :game_id,
               :team_id,
               :hoa,

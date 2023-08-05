@@ -1,5 +1,7 @@
 class Game
   @@games = []
+  @@season_lookup = {}
+
   attr_reader :season,
               :game_id,
               :away_team_id,
@@ -15,9 +17,15 @@ class Game
     @home_team_id = test_game_file[:home_team_id]
     @home_team_goals = test_game_file[:home_goals].to_i
     @@games << self
+    @@season_lookup[@season] ||= []
+    @@season_lookup[@season] << @game_id
   end
 
   def self.games
     @@games
+  end
+
+  def self.season_lookup
+    @@season_lookup
   end
 end

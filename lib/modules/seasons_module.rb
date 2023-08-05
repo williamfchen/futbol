@@ -82,13 +82,13 @@ module Seasons
     Team.teams_lookup[team_hash]
   end
 
-  def winningest_coach(request_season)
-    coach_win_percentage(request_season).key(coach_win_percentage(request_season).values.max)
-  end
+  # def winningest_coach(request_season)
+  #   coach_win_percentage(request_season).key(coach_win_percentage(request_season).values.max)
+  # end
   
-  def worst_coach(request_season)
-    coach_win_percentage(request_season).key(coach_win_percentage(request_season).values.min)
-  end
+  # def worst_coach(request_season)
+  #   coach_win_percentage(request_season).key(coach_win_percentage(request_season).values.min)
+  # end
   
   private
 
