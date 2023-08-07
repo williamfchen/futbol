@@ -3,11 +3,17 @@ class Team
   @@teams_lookup = {}
 
   attr_reader :teamname,
-              :team_id
+              :team_id,
+              :franchise_id,
+              :abbreviation,
+              :link
 
   def initialize(team_details)
     @teamname = team_details[:teamname]
     @team_id = team_details[:team_id]
+    @franchise_id = team_details[:franchiseid]
+    @abbreviation = team_details[:abbreviation]
+    @link = team_details[:link]
     @@teams << self
     @@teams_lookup[@team_id] = @teamname
   end
@@ -20,4 +26,3 @@ class Team
     @@teams_lookup
   end
 end
-  

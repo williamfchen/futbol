@@ -140,7 +140,7 @@ RSpec.describe StatTracker do
       expect(stat_tracker.most_tackles("20142015")).to eq "Seattle Sounders FC"
     end
   end
-  
+
   describe "#fewest_tackles" do 
     it "can print the name of the team with the fewest tackles by season" do
       expect(stat_tracker.fewest_tackles("20132014")).to eq "Atlanta United"
@@ -195,6 +195,31 @@ RSpec.describe StatTracker do
     it "can print the name of the team with the highest accuracy by season" do
       expect(stat_tracker.least_accurate_team("20132014")).to eq "New York City FC"
       expect(stat_tracker.least_accurate_team("20142015")).to eq "Columbus Crew SC"
+    end
+  end
+
+  describe "#team_info" do
+    it "creates a hash of data for a team given the team " do
+      expected = {
+        "team_id" => "18",
+        "franchise_id" => "34",
+        "team_name" => "Minnesota United FC",
+        "abbreviation" => "MIN",
+        "link" => "/api/v1/teams/18"
+      }
+      expect(stat_tracker.team_info("18")).to eq expected
+    end
+  end
+
+  describe "#best_season" do
+    it "finds the best season by team id number" do
+      expect(stat_tracker.best_season("6")).to eq "20132014"
+    end
+  end
+
+  describe "#worst_season" do
+    it "finds the best season by team id number" do
+      expect(stat_tracker.worst_season("6")).to eq "20142015"
     end
   end
 end
