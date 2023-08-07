@@ -1,8 +1,6 @@
-require_relative '../team'
-
 module Best
   def count_of_teams
-    Team.teams.count
+    team_file.count
   end  
 
   def winningest_coach(season)
@@ -15,52 +13,52 @@ module Best
   
   def most_accurate_team(season)
     id = team_accuracy(season).max_by { |_, accuracy| accuracy[:goals].to_f / accuracy[:shots] }[0] 
-    Team.teams_lookup[id]
+    team_file[id]
   end
   
   def least_accurate_team(season)
     id = team_accuracy(season).min_by { |_, accuracy| accuracy[:goals].to_f / accuracy[:shots] }[0]
-    Team.teams_lookup[id]
+    team_file[id]
   end
 
   def most_tackles(season)
     id = team_accuracy(season).max_by { |_, accuracy| accuracy[:tackles] }[0] 
-    Team.teams_lookup[id]
+    team_file[id]
   end
 
   def fewest_tackles(season)
     id = team_accuracy(season).min_by { |_, accuracy| accuracy[:tackles] }[0] 
-    Team.teams_lookup[id]
+    team_file[id]
   end
 
   def best_offense
     id = team_stats.max_by { |team, value_hash| value_hash[:total_goals].to_f / value_hash[:total_games] }.first
-    Team.teams_lookup[id]
+    team_file[id]
   end
 
   def worst_offense
     id = team_stats.min_by { |team, value_hash| value_hash[:total_goals].to_f / value_hash[:total_games] }.first
-    Team.teams_lookup[id]
+    team_file[id]
   end
 
   def highest_scoring_home_team
     id = team_stats.max_by { |team, value_hash| value_hash[:home_goals].to_f / value_hash[:home_games] }.first
-    Team.teams_lookup[id]
+    team_file[id]
   end
   
   def lowest_scoring_home_team
     id = team_stats.min_by { |team, value_hash| value_hash[:home_goals].to_f / value_hash[:home_games] }.first
-    Team.teams_lookup[id]
+    team_file[id]
   end
 
   def highest_scoring_visitor
     id = team_stats.max_by { |team, value_hash| value_hash[:away_goals].to_f / value_hash[:away_games] }.first
-    Team.teams_lookup[id]
+    team_file[id]
   end
   
   def lowest_scoring_visitor
     id = team_stats.min_by { |team, value_hash| value_hash[:away_goals].to_f / value_hash[:away_games] }.first
-    Team.teams_lookup[id]
+    team_file[id]
   end
 
   def total_games_played
@@ -159,7 +157,6 @@ module Best
     end
     team_stats
   end
-
 end
 
   

@@ -1,5 +1,4 @@
 require 'csv'
-require_relative 'team'
 
 require_relative './modules/best_module'
 
@@ -12,7 +11,7 @@ class StatTracker
   def initialize(data)
     @data = data
     @game_file ||= CSV.read(data[:games], headers: true, header_converters: :symbol).map(&:to_h)
-    @team_file ||= CSV.foreach(data[:teams], headers: true, header_converters: :symbol) { |row| Team.new(row) }
+    @team_file ||= team_hash
     @best_team_file ||= CSV.read(data[:game_teams], headers: true, header_converters: :symbol).map(&:to_hash)
   end
 
@@ -20,5 +19,15 @@ class StatTracker
   
   def self.from_csv(locations)
     StatTracker.new(locations)
+  end
+
+  def team_hash
+    hash = {}
+    CSV.foreach(data[:teams], headers: true, header_converters: :symbol) do |row|
+      team_id = row[:team_id]
+      team_name = row[:teamname]
+      hash[team_id] = team_name
+    end
+    hash
   end
 end

@@ -9,11 +9,7 @@ RSpec.describe StatTracker do
     }
   end
   let(:stat_tracker) { StatTracker.from_csv(data) }
-
-  before(:each) do
-    Team.class_variable_set :@@teams, []
-  end
-
+  
   describe '#initialize' do
     it 'should initialize with the correct instance variables' do
       expect(stat_tracker).to be_a StatTracker
