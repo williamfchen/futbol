@@ -31,10 +31,12 @@ module Teams
   def season_percentages(team_id)
     wins = game_id_for_wins(team_id)
     losses = game_id_for_losses(team_id)
+    tie = game_id_for_ties(team_id)
     Game.games.group_by { |game| game.season }.each_with_object({}) do |(season, game), hash|
       win_count = game.count {|game| wins.include?(game.game_id)}
       loss_count = game.count {|game| losses.include?(game.game_id)}
-      hash[season] = win_count / (win_count + loss_count).to_f
+      tie_count = game.count {|game| tie.include?(game.game_id)}
+      hash[season] = win_count / (win_count + loss_count + tie_count).to_f
     end
   end
 
@@ -52,5 +54,9 @@ module Teams
 
   def game_id_for_losses(team_id)
     select_team_object_with(team_id).filter_map { |game| game.game_id if game.result == "LOSS" }
+  end
+
+  def game_id_for_ties(team_id)
+    select_team_object_with(team_id).filter_map { |game| game.game_id if game.result == "TIE" }
   end
 end
