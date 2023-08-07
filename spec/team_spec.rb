@@ -5,12 +5,14 @@ RSpec.describe Team do
 
   describe '#exists' do
     it 'initializes' do
+
       expect(team).to be_a Team
     end
   end
 
   describe '#teamname' do
     it 'reads the team name' do
+
       expect(team.teamname).to eq("Atlanta United")
     end
     
@@ -18,6 +20,7 @@ RSpec.describe Team do
   
   describe '#team_id' do
     it 'reads the team id' do
+      
       expect(team.team_id).to eq 1
     end  
   end

@@ -26,5 +26,9 @@ describe GameTeam do
       expect(gameteam1.shots).to eq(77)
       expect(gameteam1.tackles).to eq(11)
     end
+
+    it "collects all game team class objects" do
+      expect(GameTeam.game_teams).to all be_a GameTeam
+    end
   end
 end
