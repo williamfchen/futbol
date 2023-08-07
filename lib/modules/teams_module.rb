@@ -22,6 +22,10 @@ module Teams
     season_percentages(team_id).max_by { |season, percent| percent}.first
   end
   
+  def worst_season(team_id)
+    season_percentages(team_id).min_by { |season, percent| percent}.first
+  end
+  
   private
 
   def season_percentages(team_id)
