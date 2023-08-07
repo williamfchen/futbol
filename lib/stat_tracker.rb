@@ -1,6 +1,5 @@
 require 'csv'
 require_relative 'team'
-require_relative 'season'
 require_relative 'game_team'
 require_relative 'game'
 require_relative './modules/teams_module'

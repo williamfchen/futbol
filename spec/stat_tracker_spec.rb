@@ -104,6 +104,7 @@ RSpec.describe StatTracker do
         "20132014"=>4.19, 
         "20172018"=>4.44
       }
+
       expect(stat_tracker.average_goals_by_season).to be_a Hash
       expect(stat_tracker.average_goals_by_season).to eq(expectation)
     end
@@ -135,6 +136,7 @@ RSpec.describe StatTracker do
 
   describe "#most_tackles" do
     it "can print the name of the team with the most tackles by season" do
+
       expect(stat_tracker.most_tackles("20132014")).to eq "FC Cincinnati"
       expect(stat_tracker.most_tackles("20142015")).to eq "Seattle Sounders FC"
     end
@@ -142,6 +144,7 @@ RSpec.describe StatTracker do
 
   describe "#fewest_tackles" do 
     it "can print the name of the team with the fewest tackles by season" do
+
       expect(stat_tracker.fewest_tackles("20132014")).to eq "Atlanta United"
       expect(stat_tracker.fewest_tackles("20142015")).to eq "Orlando City SC"
     end
@@ -149,42 +152,49 @@ RSpec.describe StatTracker do
   
   describe '#best_offense' do
     it 'returns the team with the most average goals scored' do
+
       expect(stat_tracker.best_offense).to eq "Reign FC"
     end
   end
 
   describe '#worst_offense' do
     it 'returns the team with the least average goals scored' do
+
       expect(stat_tracker.worst_offense).to eq "Utah Royals FC"
     end
   end
 
   describe '#highest_scoring_home_team' do
     it 'returns the home team with the highest average score per game' do
+
       expect(stat_tracker.highest_scoring_home_team).to eq "Reign FC"
     end
   end
   
   describe '#lowest_scoring_home_team' do
     it 'returns the home team with the lowest average score per game' do
+
       expect(stat_tracker.lowest_scoring_home_team).to eq "Utah Royals FC"
     end
   end
 
   describe '#highest_scoring_visitor' do
     it 'returns the visitor with the highest average score per game' do
+
       expect(stat_tracker.highest_scoring_visitor).to eq "FC Dallas"
     end
   end
 
   describe '#lowest_scoring_visitor' do
     it 'returns the visitor with the lowest average score per game' do
+
       expect(stat_tracker.lowest_scoring_visitor).to eq "San Jose Earthquakes"
     end
   end
 
   describe "#most_accurate_team" do
     it "can print the name of the team with the highest accuracy by season" do
+
       expect(stat_tracker.most_accurate_team("20132014")).to eq "Real Salt Lake"
       expect(stat_tracker.most_accurate_team("20142015")).to eq "Toronto FC"
     end
@@ -192,6 +202,7 @@ RSpec.describe StatTracker do
 
   describe "#least_accurate_team" do
     it "can print the name of the team with the highest accuracy by season" do
+
       expect(stat_tracker.least_accurate_team("20132014")).to eq "New York City FC"
       expect(stat_tracker.least_accurate_team("20142015")).to eq "Columbus Crew SC"
     end
@@ -206,21 +217,22 @@ RSpec.describe StatTracker do
         "abbreviation" => "MIN",
         "link" => "/api/v1/teams/18"
       }
+
       expect(stat_tracker.team_info("18")).to eq expected
     end
   end
 
   describe "#best_season" do
     it "finds the best season by team id number" do
+
       expect(stat_tracker.best_season("6")).to eq "20132014"
     end
   end
 
   describe "#worst_season" do
     it "finds the best season by team id number" do
+
       expect(stat_tracker.worst_season("6")).to eq "20142015"
     end
   end
 end
-
-
