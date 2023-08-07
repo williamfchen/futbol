@@ -11,7 +11,6 @@ RSpec.describe StatTracker do
   let(:stat_tracker) { StatTracker.from_csv(data) }
 
   before(:each) do
-    Season.class_variable_set :@@seasons, []
     GameTeam.class_variable_set :@@game_teams, []
     Team.class_variable_set :@@teams, []
     Game.class_variable_set :@@games, []
